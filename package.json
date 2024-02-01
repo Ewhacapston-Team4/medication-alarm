@@ -1,0 +1,26 @@
+{
+  "name": "medication-alarm",
+  "version": "1.0.0",
+  "description": "capstone-design",
+  "main": "index.js",
+  "repository": "https://github.com/Ewhacapston-Team4/medication-alarm.git",
+  "author": "Yoona Jo",
+  "license": "MIT",
+  "scripts": {
+    "dev": "babel-node src/index.js"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.9",
+    "@babel/core": "^7.23.9",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.23.9"
+  }
+}
