@@ -1,7 +1,5 @@
 // dataValidator.js
 
-// dataValidator.js
-
 const validator = require('validator');
 
 const dataValidator = {
