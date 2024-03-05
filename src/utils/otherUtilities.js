@@ -3,4 +3,3 @@ const otherUtilities = {
   };
   
   module.exports = otherUtilities;
-  
