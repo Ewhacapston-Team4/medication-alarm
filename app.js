@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const appConfig = require('./src/config/appConfig');
 const userRoutes = require('./src/routes/userRoutes');
 const authRoutes = require('./src/routes/authRoutes');
+const pillRoutes = require('./src/routes/pillRoutes');
 const databaseConfig = require('./src/config/database');
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(passport.session());
 // 라우터 설정
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/pill', pillRoutes);
 
 
 // 서버 시작
