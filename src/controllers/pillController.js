@@ -1,5 +1,6 @@
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 const pillController = {
   uploadPillPhoto: (req, res) => {
@@ -9,23 +10,37 @@ const pillController = {
     // 이미지 파일 경로에서 파일명 추출
     const imageName = path.basename(imagePath);
 
-    // 파일명에 확장자를 붙여줍니다.
-    const imageNameWithExtension = `${imageName}.png`; // 예를 들어 PNG 형식으로 이미지를 업로드한다고 가정합니다.
+    const newPath = `${imagePath}.png`;
 
-    // 파이썬 스크립트 실행
-    exec(`python3 pill.py "${imageNameWithExtension}"`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
+    fs.rename(imagePath, newPath, (err) => {
+      if (err) {
+        console.error('Error renaming file:', err);
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-      if (stderr) {
-        console.error(`stderr: ${stderr}`);
-        return res.status(400).json({ error: 'Bad Request' });
-      }
+      
+      const newImagePath = path.join(__dirname, '..', 'controllers', 'uploads', imageName);
 
-      // 정상적으로 결과가 출력될 경우
-      const pillName = stdout.trim(); // 알약 이름
-      return res.json({ pillName });
+      // 파이썬 스크립트 실행
+      const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/pill.py', newImagePath]);
+
+      let pillName = ''; // 알약 이름을 저장할 변수
+
+      python.stdout.on('data', (data) => {
+        console.log('stdout:', data.toString());
+        pillName = data.toString().trim(); // 알약 이름 저장
+      });
+
+      python.stderr.on('data', (data) => {
+        console.error('stderr:', data.toString());
+      });
+
+      python.on('close', (code) => {
+        if (pillName) {
+          return res.json({ pillName }); // 알약 이름이 있을 경우 응답
+        } else {
+          return res.status(400).json({ error: 'Bad Request' }); // 알약 이름이 없을 경우 에러 응답
+        }
+      });
     });
   },
 };
