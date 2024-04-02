@@ -1,3 +1,5 @@
+// 알약 사진 업로드 시 알약명 
+
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');

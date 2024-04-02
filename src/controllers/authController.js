@@ -1,7 +1,10 @@
+// 회원가입, 로그인 api
+
 require('dotenv').config();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const dataValidator = require('../utils/dataValidator'); // 추가
 
@@ -87,7 +90,24 @@ const authController = {
     }
   },
 
-  login: passport.authenticate('local', { failureRedirect: '/' }),
+  login: //passport.authenticate('local', { failureRedirect: '/' }),
+    async (req, res) => {
+      passport.authenticate('loacal', async (err, user, info) => {
+        try {
+          if (err || !user) {
+            return res.status(401).json({success: false, message: info.message });
+          }
+
+          req.login(user, { session : false }, async (error) => {
+            if (error) return next(error);
+            const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET);
+            return res.json({ success: true, token });
+          });
+        } catch (error) {
+          return res.status(400).json({ success: false, message: error.message });
+        }
+      })(req, res);
+    },
 
   googleLogin: passport.authenticate('google', { scope: ['profile', 'email'] }),
   googleCallback: (req, res, next) => {
