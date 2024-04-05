@@ -4,7 +4,7 @@ const combinedPillController = {
     combinedPill: (req, res) => {
         const pillSeq = req.params.pillSeq;
 
-        const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/combinedPill.py', pillSeq]);
+        const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/combinedPill.py', pillSeq]);
         let dataBuffer = Buffer.from('');
 
         python.stdout.on('data', (data) => {

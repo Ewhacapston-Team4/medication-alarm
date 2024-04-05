@@ -4,7 +4,7 @@ const searchPillController = {
     searchPill: (req, res) => {
         const pillName = req.params.pillName; // req.params를 사용하여 알약 이름 가져오기
 
-        const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/searchPill.py', pillName]); // 스크립트 경로 수정
+        const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/searchPill.py', pillName]); // 스크립트 경로 수정
         let dataBuffer = Buffer.from('');
 
         python.stdout.on('data', (data) => {

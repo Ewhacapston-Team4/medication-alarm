@@ -20,29 +20,11 @@ const pillController = {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
       
+      res.status(200).json({ message: 'Image uploaded and converted to PNG successfully' });
+
       const newImagePath = path.join(__dirname, '..', 'controllers', 'uploads', imageName);
 
-      // 파이썬 스크립트 실행
-      const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/pill.py', newImagePath]);
-
-      let pillName = ''; // 알약 이름을 저장할 변수
-
-      python.stdout.on('data', (data) => {
-        console.log('stdout:', data.toString());
-        pillName = data.toString().trim(); // 알약 이름 저장
-      });
-
-      python.stderr.on('data', (data) => {
-        console.error('stderr:', data.toString());
-      });
-
-      python.on('close', (code) => {
-        if (pillName) {
-          return res.json({ pillName }); // 알약 이름이 있을 경우 응답
-        } else {
-          return res.status(400).json({ error: 'Bad Request' }); // 알약 이름이 없을 경우 에러 응답
-        }
-      });
+      // 파이썬 스크립트 실행 코드
     });
   },
 };
