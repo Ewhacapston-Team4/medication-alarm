@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 from keras import models
 from keras.utils import load_img, img_to_array
@@ -53,24 +52,8 @@ def pill(image_path, label_list):
     except Exception as e:
         print(f"Error predicting image: {e}")
         return None
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python script.py <image_path>")
-        sys.exit(1)
     
-    image_path = sys.argv[1]
-    folder_id = "1u-qZjYX4WQNSheUejNDcg2KAE-um9wch"
-    folder_names = list_folders(folder_id)
-
-    if not folder_names:
-        print("Error: Failed to retrieve folder names from Google Drive.")
-        sys.exit(1)
-
-    result = pill(image_path, folder_names)
-
-    if result is not None:
-        print(f"Predicted class label: {result}")
-    else:
-        print("Error: Image classification failed.")
-        sys.exit(1)
+image_path = 'C:/Users/82104/Node_lecture/medication-alarm/src/controllers/uploads/51c13dac5a169d8345c16dcafae774de.png'
+folder_id = "1u-qZjYX4WQNSheUejNDcg2KAE-um9wch"
+folder_names = list_folders(folder_id)
+print(folder_names)
