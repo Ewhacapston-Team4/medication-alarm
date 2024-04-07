@@ -17,43 +17,62 @@ drive_service = build('drive', 'v3', credentials=credentials)
 loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/tri_pill_classification_model.h5")
 
 # 구글 드라이브에서 특정 폴더의 폴더 리스트 가져오기
+#def list_folders(folder_id):
+#    results = drive_service.files().list(
+#        q=f"'{folder_id}' in parents and mimeType='application/vnd.google-apps.folder'",
+#        fields="files(name)"
+#    ).execute()
+#    items = results.get('files', [])
+#    folder_names = [item['name'] for item in items]
+#    return folder_names
+
 def list_folders(folder_id):
+    folder_names = []
+    page_token = None
+
     try:
-        results = drive_service.files().list(
-            q=f"'{folder_id}' in parents and mimeType='application/vnd.google-apps.folder'",
-            fields="files(name)"
-        ).execute()
-        items = results.get('files', [])
-        folder_names = [item['name'] for item in items]
-        return folder_names
+        while True:
+            # 페이지 크기 및 다음 페이지 토큰을 포함하여 API 요청
+            results = drive_service.files().list(
+                q=f"'{folder_id}' in parents and mimeType='application/vnd.google-apps.folder'",
+                fields="nextPageToken, files(name)",
+                pageSize=100,  # 한 번에 가져올 폴더 수 조정
+                pageToken=page_token
+            ).execute()
+
+            # 결과에서 폴더 이름 추출하여 리스트에 추가
+            items = results.get('files', [])
+            folder_names.extend([item['name'] for item in items])
+
+            # 다음 페이지 토큰이 있는 경우 다음 페이지 호출을 위해 설정
+            page_token = results.get('nextPageToken')
+            if not page_token:
+                break  # 다음 페이지 토큰이 없으면 종료
+
+        return sorted(folder_names)
+    
     except Exception as e:
-        print(f"Error listing folders: {e}")
-        return []
+        print("폴더 목록을 가져오는 중 오류 발생:", e)
+        return[]
 
 def pill(image_path, label_list):
-    try:
-        # 이미지 불러오기 및 전처리
-        img = load_img(image_path, target_size=(224, 224))
-        img_array = img_to_array(img)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array /= 255.0
+    img = load_img(image_path, target_size=(224, 224))
+    img_array = img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array /= 255.0
 
-        # 예측 수행
-        predictions = loaded_model.predict(img_array)
-
-        # 예측된 클래스 인덱스
-        predicted_class_index = np.argmax(predictions)
-
-        # 클래스 인덱스로부터 클래스 레이블 얻기
-        predicted_class_label = label_list[predicted_class_index]
-
-        # 예측 결과 반환
-        return predicted_class_label
-    except Exception as e:
-        print(f"Error predicting image: {e}")
-        return None
+    predictions = loaded_model.predict(img_array)
+    predicted_class_index = np.argmax(predictions)
     
-image_path = 'C:/Users/82104/Node_lecture/medication-alarm/src/controllers/uploads/51c13dac5a169d8345c16dcafae774de.png'
+    if predicted_class_index < len(label_list):
+        predicted_class_label = label_list[predicted_class_index]
+    else:
+        predicted_class_label = "알 수 없음"  # 인덱스 오류 gracefully 처리
+    
+    return predicted_class_label
+
 folder_id = "1u-qZjYX4WQNSheUejNDcg2KAE-um9wch"
 folder_names = list_folders(folder_id)
-print(folder_names)
+image_path = "C:/Users/82104/Node_lecture/medication-alarm/src/controllers/uploads/5a5a9df840c856862b67467ed12e90f4.png"
+pillName = pill(image_path, folder_names)
+print(pillName)

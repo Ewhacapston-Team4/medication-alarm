@@ -21,10 +21,8 @@ const pillController = {
       
       console.log('Image uploaded and converted to PNG successfully');
 
-      const newImagePath = path.join(__dirname, '..', 'controllers', 'uploads', imageName);
-
       // 파이썬 스크립트 실행 코드
-      const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/pill.py', newImagePath]);
+      const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/pill.py', newPath]);
       let dataBuffer = Buffer.from('');
 
       python.stdout.on('data', (data) => {
@@ -39,7 +37,7 @@ const pillController = {
         if (code === 0) {
           console.log(`파이썬 스크립트 실행이 완료되었습니다.`);
           const result = dataBuffer.toString('utf-8');
-          res.send(result);
+          res.json({ pillName: result});
         } else {
           console.error(`파이썬 스크립트 종료 코드: ${code}`);
           res.status(500).send('서버에서 오류가 발생했습니다.');
