@@ -53,7 +53,7 @@ def pill(image_path, label_list):
     img_array = np.expand_dims(img_array, axis=0)
     img_array /= 255.0
 
-    predictions = loaded_model.predict(img_array)
+    predictions = loaded_model.predict(img_array, verbose = 0)
     predicted_class_index = np.argmax(predictions)
     
     if predicted_class_index < len(label_list):
