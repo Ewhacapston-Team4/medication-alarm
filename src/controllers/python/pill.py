@@ -14,9 +14,6 @@ credentials = service_account.Credentials.from_service_account_file(
 # 구글 드라이브 api 클라이언트 생성
 drive_service = build('drive', 'v3', credentials=credentials)
 
-# 모델 로드
-loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/tri_pill_classification_model.h5")
-
 # 구글 드라이브에서 특정 폴더의 폴더 리스트 가져오기
 def list_folders(folder_id):
     folder_names = []
@@ -47,7 +44,13 @@ def list_folders(folder_id):
         print("폴더 목록을 가져오는 중 오류 발생:", e)
         return[]
 
-def pill(image_path, label_list):
+def pill(image_path, label_list, poly):
+    # 모델 로드
+    if poly == "tri" :
+        loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/tri_pill_classification_model.h5")
+    elif poly == "pent" :
+        loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/pent_pill_classification_model.h5")
+
     img = load_img(image_path, target_size=(224, 224))
     img_array = img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
@@ -75,8 +78,9 @@ if __name__ == "__main__":
     if not folder_names:
         print("Error: Failed to retrieve folder names from Google Drive.")
         sys.exit(1)
-
-    result = pill(image_path, folder_names)
+    
+    poly = sys.argv[2]
+    result = pill(image_path, folder_names, poly)
 
     if result is not None:
         print(result)

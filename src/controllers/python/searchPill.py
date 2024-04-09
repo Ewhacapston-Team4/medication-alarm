@@ -16,7 +16,7 @@ def searchPill(pillName):
         dataframe = pd.DataFrame(items)
 
         # DataFrame을 문자열로 변환
-        result = dataframe #.to_string(index=False)
+        result = dataframe.to_string(index=False)
 
     except requests.exceptions.RequestException as e:
         result = f"오류 발생: {e}"
