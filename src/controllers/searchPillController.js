@@ -1,10 +1,9 @@
 const { spawn } = require('child_process');
 
 const searchPillController = {
-    searchPill: (req, res) => {
-        const pillName = req.params.pillName; // req.params를 사용하여 알약 이름 가져오기
-
-        const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/searchPill.py', pillName]); // 스크립트 경로 수정
+    searchSeq: (req, res) => {
+        const pillName = req.params.pillName;
+        const python = spawn('python', ['C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/searchSeq.py', pillName]); // 스크립트 경로 수정
         let dataBuffer = Buffer.from('');
 
         python.stdout.on('data', (data) => {
@@ -25,7 +24,7 @@ const searchPillController = {
                 res.status(500).send('서버에서 오류가 발생했습니다.');
             }
         });
-    }
+    },
 };
 
 module.exports = searchPillController;

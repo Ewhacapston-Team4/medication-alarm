@@ -72,14 +72,18 @@ if __name__ == "__main__":
         sys.exit(1)
     
     image_path = sys.argv[1]
-    folder_id = "1u-qZjYX4WQNSheUejNDcg2KAE-um9wch"
+    poly = sys.argv[2]
+    if poly == "tri" :
+        folder_id = "1u-qZjYX4WQNSheUejNDcg2KAE-um9wch"
+    elif poly == "pent" :
+        folder_id = "1iUBHNts466CMVH_dzfzfqEWNhLSgd-nn"
+        
     folder_names = list_folders(folder_id)
 
     if not folder_names:
         print("Error: Failed to retrieve folder names from Google Drive.")
         sys.exit(1)
     
-    poly = sys.argv[2]
     result = pill(image_path, folder_names, poly)
 
     if result is not None:

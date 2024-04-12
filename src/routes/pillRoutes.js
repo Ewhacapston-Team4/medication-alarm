@@ -24,7 +24,8 @@ const uploadPent = multer({
 router.post('/upload/tri', uploadTri.single('image'), pillController.uploadTriPillPhoto);
 router.post('/upload/pent', uploadPent.single('image'), pillController.uploadPentPillPhoto);
 
-router.get('/search/:pillName', searchPillController.searchPill);
+router.get('/searchSeq/:pillName', searchPillController.searchSeq);
+// router.get('/search/:pillName', searchPillController.searchPill);
 router.get('/combine/:pillSeq', combinedPillController.combinedPill);
 
 module.exports = router;
