@@ -50,6 +50,8 @@ def pill(image_path, label_list, poly):
         loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/tri_pill_classification_model.h5")
     elif poly == "pent" :
         loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/pent_pill_classification_model.h5")
+    elif poly == "hex" :
+        loaded_model = models.load_model("C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/hex_pill_classification_model.h5")
 
     img = load_img(image_path, target_size=(224, 224))
     img_array = img_to_array(img)
@@ -77,6 +79,8 @@ if __name__ == "__main__":
         folder_id = "1u-qZjYX4WQNSheUejNDcg2KAE-um9wch"
     elif poly == "pent" :
         folder_id = "1iUBHNts466CMVH_dzfzfqEWNhLSgd-nn"
+    elif poly == "hex" :
+        folder_id = "1IeMdxH1akqTxbZPaRe2CYG5a9X3gZcG7"
         
     folder_names = list_folders(folder_id)
 
