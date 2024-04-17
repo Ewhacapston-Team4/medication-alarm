@@ -19,7 +19,7 @@ const combinedPillController = {
             if (code === 0) {
                 console.log(`파이썬 스크립트 실행이 완료되었습니다.`);
                 const result = dataBuffer.toString('utf-8');
-                res.send(result);
+                res.send(result); // 전체 결과를 한 번에 클라이언트에게 전송
             } else {
                 console.error(`파이썬 스크립트 종료 코드: ${code}`);
                 res.status(500).send('서버에서 오류가 발생했습니다.');

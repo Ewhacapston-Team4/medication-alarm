@@ -35,7 +35,7 @@ router.post('/upload/pent', uploadPent.single('image'), pillController.uploadPen
 router.post('/upload/hex', uploadHex.single('image'), pillController.uploadHexPillPhoto);
 
 router.get('/searchSeq/:pillName', searchPillController.searchSeq);
-// router.get('/search/:pillSeq', searchPillController.searchPill);
+router.get('/search/:pillSeq', searchPillController.searchPill);
 router.get('/combine/:pillSeq', combinedPillController.combinedPill);
 
 
