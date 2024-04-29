@@ -33,6 +33,7 @@ app.use(passport.session());
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/pill', pillRoutes);
+// app.use('/api/alarms', alarmRoutes)
 
 
 // 서버 시작

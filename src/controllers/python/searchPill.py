@@ -7,6 +7,18 @@ import re
 def searchPill(pillSeq):
     # 노인주의
     try:
+        csv = pd.read_csv('C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/seq_name_img_class.csv', names=['seq', 'name', 'imgurl', 'class'])
+
+        class_for_name = csv.loc[csv['seq'] == pillSeq, 'class'].values
+
+        if class_for_name.size > 0 :
+            result0 = class_for_name[0]
+        else :
+            result0 = ""
+
+        result1 = "노인 주의 약물 아님"
+        result2 = "용량 주의 사항 없음"
+        result3 = "투여 기간 주의 사항 없음"
         url = f"http://apis.data.go.kr/1471000/DURPrdlstInfoService03/getOdsnAtentInfoList03?serviceKey=NDY4F%2BZ3KM7why4fZ7kxeMoMsKUPDZULW3AGi2MBsbbCDbftlWdqpWspCKRgh8%2B3X802AreQijV0rQeD4seuFw%3D%3D&type=xml&itemSeq={pillSeq}"
         response = requests.get(url, verify=False)
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -117,7 +129,7 @@ def searchPill(pillSeq):
         else:
             result3 = "투여기간 주의 사항 없음"
 
-        result = result1 + "\n" + result2 + "\n" + result3
+        result = result0 + "\n" + result1 + "\n" + result2 + "\n" + result3
 
     except requests.exceptions.RequestException as e:
         result = f"오류 발생: {e}"

@@ -4,7 +4,7 @@ import pandas as pd
 def searchSeq(pillName):
     name = pillName
     
-    csv = pd.read_csv('C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/seq_name_img.csv', names=['seq', 'name', 'imgurl'])
+    csv = pd.read_csv('C:/Users/82104/Node_lecture/medication-alarm/src/controllers/python/seq_name_img_class.csv', names=['seq', 'name', 'imgurl', 'class'])
 
     seq_for_name = csv.loc[csv['name'] == name, 'seq'].values
     ## img_for_name = csv.loc[csv['name'] == name, 'imgurl'].values
